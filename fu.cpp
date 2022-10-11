@@ -4,13 +4,12 @@
 
 void test1()
 {
-	Date d1(2022, 10, 10);
+	Date d1;
 	Date d2(d1);
 	Date d3;
 	//d1.print();
 	//d2.print();
 	d3.print();
-	d3 = d1;//即使不写=，系统也会自动生成
 	d3.print();
 }
 

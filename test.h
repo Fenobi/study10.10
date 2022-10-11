@@ -29,12 +29,19 @@ public:
 		_month = month;
 		_day = day;
 	}
+	Date(Date& d)
+	{
+		_year = d._year;
+		_month = d._month;
+		_day = d._day;
+	}
 
 	Date(const Date& d)
 	{
 		_year = d._year;
 		_month = d._month;
 		_day = d._day;
+		return *this;
 	}
 
 	void print()
