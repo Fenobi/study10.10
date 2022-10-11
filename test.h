@@ -5,10 +5,10 @@
 
 using namespace std;
 
-using namespace std;
-
 class Date
 {
+	friend istream& operator>>(istream& in, Date& d);
+	friend ostream& operator<<(ostream& out, const Date& d);
 public:
 	int GetMonthDay(int year, int month)
 	{
@@ -30,6 +30,13 @@ public:
 		_day = day;
 	}
 
+	/*Date(Date& d)
+	{
+		_year = d._year;
+		_month = d._month;
+		_day = d._day;
+	}*/
+
 	Date(const Date& d)
 	{
 		_year = d._year;
@@ -37,22 +44,44 @@ public:
 		_day = d._day;
 	}
 
-	void print()
+	void print() const 
 	{
 		cout << _year << "-" << _month << "-" << _day << endl;
 	}
 
 	Date& operator+=(int day);
-	Date operator+(int day);
+	Date operator+(int day) const;
 	Date& operator-=(int day);
-	Date operator-(int day);
+	Date operator-(int day) const;
 	Date& operator=(const Date& d);
-	bool operator==(const Date& d);
-	bool operator>(const Date& d);
-	bool operator>=(const Date& d);
-	
+	bool operator==(const Date& d) const;
+	bool operator!=(const Date& d) const;
+	bool operator>(const Date& d) const;
+	bool operator>=(const Date& d) const;
+	bool operator<(const Date& d) const;
+	bool operator<=(const Date& d) const;
+
 	Date& operator++();//前置
-	Date& operator++(int);//后置
+	Date operator++(int);//后置
+	Date& operator--();
+	Date operator--(int);
+	//d1-d2
+	int operator-(const Date d) const;
+	//<<和>>重载一般不写成员函数
+	//因为this默认抢了第一个参数位置，Dare对象就是左操作数，不符合使用习惯和可读性
+	/*void operator<<(ostream& out)
+	{
+		cout << _year << "年" << _month << "月" << _day << "日" << endl;
+	}*/
+
+	Date* operator&()
+	{
+		return this;
+	}
+	const Date* operator&() const
+	{
+		return this;
+	}
 
 private:
 	int _year;

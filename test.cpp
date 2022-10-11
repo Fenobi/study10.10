@@ -31,7 +31,7 @@ Date& Date::operator+=(int day)
 	return *this;
 }
 
-Date Date::operator+(int day)
+Date Date::operator+(int day) const
 {
 	Date ret(*this);
 	ret += day;
@@ -59,21 +59,26 @@ Date& Date::operator-=(int day)
 	return *this;
 }
 
-Date Date::operator-(int day)
+Date Date::operator-(int day) const
 {
-	Date dat(*this);
-	_day -= day;
-	return dat;
+	Date ret(*this);
+	ret -= day;
+	return ret;
 }
 
-bool Date::operator==(const Date& d)
+bool Date::operator==(const Date& d) const
 {
 	return d._year == _year
 		&& d._month == _month
 		&& d._day == _day;
 }
 
-bool Date::operator>(const Date& d)
+bool Date::operator!=(const Date& d) const
+{
+	return !(*this == d);
+}
+
+bool Date::operator>(const Date& d) const
 {
 	if (_year > d._year)
 	{
@@ -87,12 +92,29 @@ bool Date::operator>(const Date& d)
 	{
 		return true;
 	}
-
 	return false;
 }
-bool Date::operator>=(const Date& d)
+bool Date::operator>=(const Date& d) const
 {
 	return *this > d || *this == d;
+}
+
+bool Date::operator<(const Date& d) const
+{
+	if (*this >= d)
+	{
+		return false;
+	}
+	return true;
+}
+
+bool Date::operator<=(const Date& d) const
+{
+	if (*this > d)
+	{
+		return false;
+	}
+	return true;
 }
 
 //前置
@@ -103,9 +125,55 @@ Date& Date::operator++()
 }
 
 //后置
-Date& Date::operator++(int)
+Date Date::operator++(int)
 {
 	Date tmp(*this);
 	*this += 1;
 	return tmp;
+}
+
+Date& Date::operator--()
+{
+	*this -= 1;
+	return *this;
+}
+
+Date Date::operator--(int)
+{
+	Date tmp(*this);
+	*this -= 1;
+	return tmp;
+}
+
+//d1 - d2
+int Date::operator-(const Date d) const
+{
+	Date max = *this;
+	Date min = d;
+	int flag = 1;
+	if (*this < d)
+	{
+		max = d;
+		min = *this;
+		flag = -1;
+	}
+	int n = 0;
+	while (min != max)
+	{
+		++n;
+		++min;
+	}
+	return n * flag;
+}
+
+ostream& operator<<(ostream& out, const Date& d)
+{
+	out << d._year << "年" << d._month << "月" << d._day << "日" << endl;
+	return out;
+}
+
+istream& operator>>(istream& in, Date& d)
+{
+	in >> d._year >> d._month >> d._day;
+	return in;
 }
